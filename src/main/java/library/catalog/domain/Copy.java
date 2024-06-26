@@ -37,4 +37,20 @@ public class Copy {
     public void makeAvailable() {
         this.available = true;
     }
+
+    public CopyId getId() {
+        return id;
+    }
+
+    public BookId getBookId() {
+        return bookId;
+    }
+
+    public BarCode getBarCode() {
+        return barCode;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
 }

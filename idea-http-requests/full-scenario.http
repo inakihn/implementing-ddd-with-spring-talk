@@ -1,0 +1,189 @@
+### GET all books
+< {%
+    // we clear all global constants at the beginning of every script
+    client.global.clearAll();
+%}
+GET http://localhost:8080/book
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+
+    client.test("Response body is empty list", function () {
+        const jsonResponse = response.body;
+
+        client.assert(jsonResponse.length === 0, "Expected no books");
+    });
+%}
+
+### Add a book
+POST http://localhost:8080/book
+Content-Type: application/json
+
+{
+    "value": "9781617294945"
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 201, "Response status is not 201");
+    });
+%}
+
+### GET all books contains our book
+GET http://localhost:8080/book
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+
+    client.test("Response body contains our book", function () {
+        const jsonResponse = response.body;
+
+        const book = jsonResponse.find(element => {
+            return element.isbn.value === "9781617294945";
+        });
+        let bookId = book.id.id;
+        client.global.set("bookId", bookId);
+        client.log("Our bookId: " + bookId);
+    });
+%}
+
+### Add a copy
+POST http://localhost:8080/copy
+Content-Type: application/json
+
+{
+  "bookId": "{{bookId}}",
+  "barCode": "1"
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 201, "Response status is not 201");
+    });
+%}
+
+### Get all copies
+GET http://localhost:8080/copy
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+
+    client.test("Response body contains a copy", function () {
+        const jsonResponse = response.body;
+        client.log(jsonResponse)
+
+        const bookId = client.global.get("bookId");
+
+        const copy = jsonResponse.find(element => {
+            return element.bookId.id === bookId;
+        });
+
+        let copyId = copy.id.id;
+        client.global.set("copyId", copyId);
+        client.log("Our copyId: " + copyId);
+    });
+%}
+
+### GET all loans
+GET http://localhost:8080/loan
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+
+    client.test("Response body is empty list", function () {
+        const jsonResponse = response.body;
+
+        client.assert(jsonResponse.length === 0, "Expected no loans");
+    });
+%}
+
+### Rent a book
+POST http://localhost:8080/loan/rent
+Content-Type: application/json
+
+{
+  "copyId": "{{copyId}}",
+  "userId": "83c7245f-df12-4d72-ad8a-173fa451d320"
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 201, "Response status is not 201");
+    });
+%}
+
+### Get all loans - should contain our loan
+GET http://localhost:8080/loan
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+
+    client.test("Response body contains a copy", function () {
+        const jsonResponse = response.body;
+        client.log(jsonResponse)
+
+        const copyId = client.global.get("copyId");
+
+        const loan = jsonResponse.find(element => {
+            return element.copyId.id === copyId;
+        });
+
+        let loanId = loan.loanId.id;
+        client.global.set("loanId", loanId);
+        client.log("Our loanId: " + loanId);
+    });
+%}
+
+### Rent same book, should fail
+POST http://localhost:8080/loan/rent
+Content-Type: application/json
+
+{
+  "copyId": "{{copyId}}",
+  "userId": "83c7245f-df12-4d72-ad8a-173fa451d320"
+}
+
+> {%
+    client.test("Request fails as expected", function () {
+        client.assert(response.status === 500, "Response status is not 500");
+    });
+%}
+
+### Return book
+POST http://localhost:8080/loan/return
+Content-Type: application/json
+
+{
+  "id": "{{loanId}}"
+}
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 201, "Response status is not 201");
+    });
+%}
+
+### Get all active loans - should be emtpy
+GET http://localhost:8080/loan?active=true
+
+> {%
+    client.test("Request executed successfully", function () {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+
+    client.test("Response body is empty list", function () {
+        const jsonResponse = response.body;
+
+        client.assert(jsonResponse.length === 0, "Expected no loans");
+    });
+%}

@@ -5,6 +5,7 @@ import library.lending.domain.CopyId;
 import library.lending.domain.Loan;
 import library.lending.domain.LoanRepository;
 import library.lending.domain.UserId;
+import org.springframework.transaction.annotation.Transactional;
 
 @UseCase
 public class RentBookUseCase {
@@ -14,8 +15,8 @@ public class RentBookUseCase {
         this.loanRepository = loanRepository;
     }
 
+    @Transactional
     public void execute(CopyId copyId, UserId userId) {
-        // TODO: ensure rented copy is not rented again
         loanRepository.save(new Loan(copyId, userId, loanRepository));
     }
 }

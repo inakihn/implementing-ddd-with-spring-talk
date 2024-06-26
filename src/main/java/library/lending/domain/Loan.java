@@ -38,7 +38,7 @@ public class Loan extends AbstractAggregateRoot<Loan> {
         Assert.notNull(copyId, "copyId must not be null");
         Assert.notNull(userId, "userId must not be null");
 
-        // cool stuff, we inject the repository here and therefore we can ensure that the copy is available on domain
+        // cool stuff, we inject the repository here, and therefore we can ensure that the copy is available on domain
         // instead of doing it on the application layer.
         Assert.isTrue(loanRepository.isAvailable(copyId), "copy with id = " + copyId + " is not available");
         this.loanId = new LoanId();
@@ -58,5 +58,33 @@ public class Loan extends AbstractAggregateRoot<Loan> {
             // TODO calculate fee
         }
         this.registerEvent(new LoanClosed(this.copyId.id()));
+    }
+
+    public LoanId getLoanId() {
+        return loanId;
+    }
+
+    public CopyId getCopyId() {
+        return copyId;
+    }
+
+    public UserId getUserId() {
+        return userId;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDate getExpectedReturnDate() {
+        return expectedReturnDate;
+    }
+
+    public LocalDateTime getReturnedAt() {
+        return returnedAt;
+    }
+
+    public Long getVersion() {
+        return version;
     }
 }

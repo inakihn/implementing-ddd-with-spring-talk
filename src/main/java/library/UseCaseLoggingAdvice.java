@@ -16,7 +16,7 @@ import java.util.Arrays;
 @Aspect
 @Order(1)
 public class UseCaseLoggingAdvice {
-    private static final Logger LOGGER = LoggerFactory.getLogger(library.UseCaseLoggingAdvice.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UseCaseLoggingAdvice.class);
 
     @Pointcut("within(@library.UseCase *)")
     public void useCase() {

@@ -4,6 +4,7 @@ import library.UseCase;
 import library.catalog.domain.Book;
 import library.catalog.domain.BookRepository;
 import library.catalog.domain.Isbn;
+import org.springframework.transaction.annotation.Transactional;
 
 @UseCase
 public class AddBookToCatalogUseCase {
@@ -15,6 +16,7 @@ public class AddBookToCatalogUseCase {
         this.bookRepository = bookRepository;
     }
 
+    @Transactional
     public void execute(Isbn isbn) {
         BookInformation result = bookSearchService.search(isbn);
         Book book = new Book(result.title(), isbn);
