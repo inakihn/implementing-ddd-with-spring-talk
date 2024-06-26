@@ -6,8 +6,8 @@ import jakarta.persistence.Embedded;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Version;
-import library.eventsourcing.LoanClosed;
-import library.eventsourcing.LoanCreated;
+import library.lending.domain.event.LoanClosed;
+import library.lending.domain.event.LoanCreated;
 import org.springframework.data.domain.AbstractAggregateRoot;
 import org.springframework.util.Assert;
 

@@ -1,4 +1,4 @@
-package library.eventsourcing;
+package library.lending.domain.event;
 
 import java.util.UUID;
 

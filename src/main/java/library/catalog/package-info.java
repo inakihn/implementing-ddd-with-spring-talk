@@ -1,4 +1,4 @@
 @org.springframework.modulith.ApplicationModule(
-        allowedDependencies = "eventsourcing"
+        allowedDependencies = "lending::event"
 )
 package library.catalog;
