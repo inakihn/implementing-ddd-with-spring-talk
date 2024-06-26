@@ -1,6 +1,6 @@
 package library.lending.application;
 
-import library.UseCase;
+import library.common.UseCase;
 import library.lending.domain.Loan;
 import library.lending.domain.LoanId;
 import library.lending.domain.LoanRepository;

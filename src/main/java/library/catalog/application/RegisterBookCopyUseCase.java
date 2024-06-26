@@ -1,7 +1,7 @@
 package library.catalog.application;
 
 import jakarta.validation.constraints.NotNull;
-import library.UseCase;
+import library.common.UseCase;
 import library.catalog.domain.BarCode;
 import library.catalog.domain.BookId;
 import library.catalog.domain.Copy;

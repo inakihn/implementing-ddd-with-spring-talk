@@ -1,4 +1,4 @@
-package library;
+package library.common;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -18,7 +18,7 @@ import java.util.Arrays;
 public class UseCaseLoggingAdvice {
     private static final Logger LOGGER = LoggerFactory.getLogger(UseCaseLoggingAdvice.class);
 
-    @Pointcut("within(@library.UseCase *)")
+    @Pointcut("within(@library.common.UseCase *)")
     public void useCase() {
     }
 
@@ -34,12 +34,14 @@ public class UseCaseLoggingAdvice {
     public Object aroundServiceMethodAdvice(final ProceedingJoinPoint pjp) throws Throwable {
         StopWatch stopWatch = new StopWatch();
         try {
-            LOGGER.info("Executing use case: {}#{} with parameters: {}", pjp.getTarget().getClass(), pjp.getSignature().getName(), Arrays.toString(pjp.getArgs()));
+            LOGGER.info("Executing use case: {}#{} with parameters: {}", pjp.getTarget().getClass(),
+                    pjp.getSignature().getName(), Arrays.toString(pjp.getArgs()));
             stopWatch.start();
             return pjp.proceed();
         } finally {
             stopWatch.stop();
-            LOGGER.info("Finished executing use case {}#{} in {}ms", pjp.getTarget().getClass(), pjp.getSignature().getName(), stopWatch.getTotalTimeMillis());
+            LOGGER.info("Finished executing use case {}#{} in {}ms", pjp.getTarget().getClass(),
+                    pjp.getSignature().getName(), stopWatch.getTotalTimeMillis());
         }
     }
 }

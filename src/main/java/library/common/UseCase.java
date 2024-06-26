@@ -1,4 +1,4 @@
-package library;
+package library.common;
 
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
