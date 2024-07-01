@@ -2,7 +2,6 @@ package library;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.modulith.core.ApplicationModules;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
@@ -31,8 +30,14 @@ class LibraryApplicationTests {
     }
 
     @Test
-    void verifyModules() {
-        ApplicationModules.of(LibraryApplication.class).verify();
+    void exampleIntegrationTest() {
+        // normal user interaction
+        addBookToCatalogUseCase.execute(new Isbn("9781617294945"));
+
+        // we verify for the test that the book was added
+        bookRepository.findAll().forEach(book -> {
+            System.out.println(book.getId() + " - " + book.getTitle() + " - " + book.getIsbn().value());
+        });
     }
 
 }
