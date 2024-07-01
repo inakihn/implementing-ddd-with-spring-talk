@@ -1,4 +1,4 @@
-package library.catalog.infrastructure;
+package library.catalog.infrastructure.openlibrary;
 
 import library.catalog.application.BookInformation;
 import library.catalog.application.BookSearchService;
